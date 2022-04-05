@@ -25,9 +25,9 @@ namespace ZooAPI.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("[controller]/{id}")]
-        public async Task<ActionResult<Animal>> GetAnimal(int id)
+        public ActionResult<Animal> GetAnimal(int id)
         {
-            Animal animal = await AnimalService.GetAnimal(id);
+            Animal animal =  AnimalService.GetAnimal(id);
             if(animal is not null)
             {
                 return Ok(animal);
@@ -74,7 +74,7 @@ namespace ZooAPI.Controllers
         [HttpPut]
         [Authorize(Roles = Roles.UserRole)]
         [RequiredScope(ADScopes.scopeRequiredByApi)]
-        [Route("[controller]/{id}")]
+        [Route("[controller]")]
         public async Task<ActionResult<Animal>> FullUpdateAnimal([FromBody]UpdateAnimalDTO animal)
         {
             Animal animalModel = await AnimalService.FullUpdateAnimal(animal);

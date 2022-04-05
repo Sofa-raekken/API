@@ -10,7 +10,7 @@ namespace Service.Interfaces
 {
     public interface IAnimalService
     {
-        Task<Animal> GetAnimal(int id);
+        Animal GetAnimal(int id);
         Task<List<Animal>> GetAnimals();
         Task<Animal> InsertAnimal(CreateAnimalDTO animal);
         Task<bool> DeleteAnimal(int id);

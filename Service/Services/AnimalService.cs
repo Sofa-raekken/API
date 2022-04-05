@@ -26,11 +26,11 @@ namespace Service.Services
             throw new NotImplementedException();
         }
 
-        public async Task<Animal> GetAnimal(int id)
+        public Animal GetAnimal(int id)
         {
             using (kbh_zooContext cts = new kbh_zooContext())
             {
-                Animal animal = await cts.Animals.SingleOrDefault(x => x.IdAnimal == id);
+                Animal animal = cts.Animals.SingleOrDefault(x => x.IdAnimal == id);
                 return animal;
             }
         }
