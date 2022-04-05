@@ -35,6 +35,7 @@ namespace ZooAPI.Controllers
         [RequiredScope(ADScopes.scopeRequiredByApi)]
         public IEnumerable<WeatherForecast> Get()
         {
+            
             string ss = HttpContext.User.Identity.AuthenticationType;
             string sd = HttpContext.User.Identity.Name;
             HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);

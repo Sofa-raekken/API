@@ -9,6 +9,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
+using Service.Interfaces;
+using Service.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +38,8 @@ namespace ZooAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ZooAPI", Version = "v1" });
             });
+
+            services.AddScoped<IAnimalService, AnimalService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
