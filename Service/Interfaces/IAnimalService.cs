@@ -11,9 +11,9 @@ namespace Service.Interfaces
     public interface IAnimalService
     {
         Animal GetAnimal(int id);
-        Task<List<Animal>> GetAnimals();
-        Task<Animal> InsertAnimal(CreateAnimalDTO animal);
+        Task<List<Animal>> GetAnimals(bool alsoDisabled);
+        Task<int> InsertAnimal(Animal animal, List<DietDTO> diets);
         Task<bool> DeleteAnimal(int id);
-        Task<Animal> FullUpdateAnimal(UpdateAnimalDTO animal);
+        Task<Animal> FullUpdateAnimal(int id,UpdateAnimalDTO animal);
     }
 }

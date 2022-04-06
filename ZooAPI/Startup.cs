@@ -15,6 +15,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using ZooAPI.Profiles;
+using System.Reflection;
 
 namespace ZooAPI
 {
@@ -40,6 +43,7 @@ namespace ZooAPI
             });
 
             services.AddScoped<IAnimalService, AnimalService>();
+            services.AddAutoMapper(typeof(AnimalProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

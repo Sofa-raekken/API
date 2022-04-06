@@ -24,3 +24,6 @@ namespace ZooAPI
                 });
     }
 }
+
+//Update Database Models script insert to Package Manager Console.
+//scaffold-dbcontext "Server=sofadb.mysql.database.azure.com;database=kbh_zoo;uid=sde;pwd=ET2Kc},%)8t:5>jh;" MySql.EntityFrameworkCore -OutputDir Models -f

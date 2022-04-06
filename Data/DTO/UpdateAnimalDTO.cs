@@ -18,5 +18,6 @@ namespace Data.DTO
         public string BirthWeight { get; set; }
         public string Qr { get; set; }
         public int SpeciesIdSpecies { get; set; }
+        public bool? Disabled { get; set; }
     }
 }

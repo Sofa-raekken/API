@@ -1,8 +1,10 @@
-﻿using Data.DTO;
+﻿using AutoMapper;
+using Data.DTO;
 using Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
+using Newtonsoft.Json;
 using Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -17,20 +19,24 @@ namespace ZooAPI.Controllers
     public class AnimalController : Controller
     {
         public IAnimalService AnimalService { get; set; }
-        public AnimalController(IAnimalService animalService)
+        public IMapper Mapper { get; }
+        public AnimalController(IAnimalService animalService, IMapper mapper)
         {
             AnimalService = animalService;
+            Mapper = mapper;
         }
 
         [HttpGet]
         [AllowAnonymous]
         [Route("[controller]/{id}")]
-        public ActionResult<Animal> GetAnimal(int id)
+        public ActionResult<AnimalDTO> GetAnimal(int id)
         {
-            Animal animal =  AnimalService.GetAnimal(id);
-            if(animal is not null)
+            Animal animal = AnimalService.GetAnimal(id);
+
+            if (animal is not null)
             {
-                return Ok(animal);
+                AnimalDTO animalDTO = Mapper.Map<AnimalDTO>(animal);
+                return Ok(animalDTO);
             }
             else
             {
@@ -41,9 +47,17 @@ namespace ZooAPI.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("[controller]s")]
-        public async Task<ActionResult<List<Animal>>> GetAnimals()
+        public async Task<ActionResult<List<AnimalDTO>>> GetAnimalsWithoutDisabled()
         {
-            return Ok(await AnimalService.GetAnimals());
+            return Ok(Mapper.Map<List<AnimalDTO>>(await AnimalService.GetAnimals(false)));
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("[controller]s/alsodisabled")]
+        public async Task<ActionResult<List<AnimalDTO>>> GetAnimalsWithDisabled()
+        {
+            return Ok(Mapper.Map<List<AnimalDTO>>(await AnimalService.GetAnimals(true)));
         }
 
         [HttpPost]
@@ -52,7 +66,25 @@ namespace ZooAPI.Controllers
         [Route("[controller]")]
         public async Task<ActionResult<Animal>> PostAnimal([FromBody] CreateAnimalDTO animal)
         {
-            return Ok(await AnimalService.InsertAnimal(animal));
+            try
+            {
+                int animalId = await AnimalService.InsertAnimal(Mapper.Map<Animal>(animal), animal.Diets);
+                if (animalId > 0)
+                {
+                    return Ok(Mapper.Map<AnimalDTO>(AnimalService.GetAnimal(animalId)));
+                }
+                else
+                {
+                    return StatusCode(500);
+
+                }
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(500, animal);
+            }
+
         }
 
         [HttpDelete]
@@ -63,7 +95,7 @@ namespace ZooAPI.Controllers
         {
             if (await AnimalService.DeleteAnimal(id))
             {
-                return Ok("Successfully Created");
+                return Ok("Successfully Deleted");
             }
             else
             {
@@ -74,19 +106,26 @@ namespace ZooAPI.Controllers
         [HttpPut]
         [Authorize(Roles = Roles.UserRole)]
         [RequiredScope(ADScopes.scopeRequiredByApi)]
-        [Route("[controller]")]
-        public async Task<ActionResult<Animal>> FullUpdateAnimal([FromBody]UpdateAnimalDTO animal)
+        [Route("[controller]/{id}")]
+        public async Task<ActionResult<Animal>> FullUpdateAnimal(int id,[FromBody] UpdateAnimalDTO animal)
         {
-            Animal animalModel = await AnimalService.FullUpdateAnimal(animal);
-            if (animalModel != null)
+            try
             {
-                return Ok(animalModel);
+                Animal animalModel = await AnimalService.FullUpdateAnimal(id, animal);
+                if (animalModel != null)
+                {
+                    return Ok(Mapper.Map<AnimalDTO>(animalModel));
+                }
+                else
+                {
+                    return BadRequest(animal);
+                }
             }
-            else
+            catch (Exception)
             {
+
                 return StatusCode(500, animal);
             }
-
         }
     }
 }

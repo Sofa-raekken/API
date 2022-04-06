@@ -24,6 +24,7 @@ namespace Data.Models
         public string BirthWeight { get; set; }
         public string Qr { get; set; }
         public int SpeciesIdSpecies { get; set; }
+        public byte? Disabled { get; set; }
 
         public virtual Species SpeciesIdSpeciesNavigation { get; set; }
         public virtual ICollection<AnimalHasDiet> AnimalHasDiets { get; set; }
