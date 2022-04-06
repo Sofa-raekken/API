@@ -10,9 +10,9 @@ namespace Data.Repository
 {
     public class AnimalRepository : IAnimalRepository
     {
-        private kbh_zooContext context;
+        private Kbh_zooContext context;
 
-        public AnimalRepository(kbh_zooContext ctx)
+        public AnimalRepository(Kbh_zooContext ctx)
         {
             context = ctx;
         }

@@ -13,8 +13,8 @@ namespace Service.Services
 {
     public class AnimalService : IAnimalService
     {
-        private kbh_zooContext Context;
-        public AnimalService(kbh_zooContext ctx)
+        private Kbh_zooContext Context;
+        public AnimalService(Kbh_zooContext ctx)
         {
             Context = ctx;
         }

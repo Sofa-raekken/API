@@ -37,10 +37,10 @@ namespace ZooAPI
         public void ConfigureServices(IServiceCollection services)
         {
             
-            services.AddDbContext<kbh_zooContext>(
+            services.AddDbContext<Kbh_zooContext>(
             options =>
             {
-                services.AddDbContext<kbh_zooContext>(
+                services.AddDbContext<Kbh_zooContext>(
                 options => options.UseSqlServer(
                     ConfigurationManager.ConnectionStrings["ZooDB"].ConnectionString,
                 providerOptions => providerOptions.EnableRetryOnFailure()));
@@ -56,7 +56,8 @@ namespace ZooAPI
             });
 
             services.AddScoped<IAnimalService, AnimalService>();
-            services.AddAutoMapper(typeof(AnimalProfile));
+            services.AddScoped<IEventService, EventService>();
+            services.AddAutoMapper(typeof(AnimalProfile), typeof(EventProfile));
 
         }
 

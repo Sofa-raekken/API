@@ -16,9 +16,10 @@ namespace ZooAPI.Controllers
 {
     [Authorize]
     [ApiController]
+    [Route("[controller]")]
     public class AnimalsController : Controller
     {
-        public IAnimalService AnimalService { get; set; }
+        public IAnimalService AnimalService { get; }
         public IMapper Mapper { get; }
         public AnimalsController(IAnimalService animalService, IMapper mapper)
         {
@@ -28,7 +29,7 @@ namespace ZooAPI.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("[controller]/{id}")]
+        [Route("{id}")]
         public ActionResult<AnimalDTO> GetAnimal(int id)
         {
             Animal animal = AnimalService.GetAnimal(id);
@@ -46,7 +47,6 @@ namespace ZooAPI.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("[controller]")]
         public async Task<ActionResult<List<AnimalDTO>>> GetAnimalsWithoutDisabled()
         {
             return Ok(Mapper.Map<List<AnimalDTO>>(await AnimalService.GetAnimals(false)));
@@ -55,7 +55,7 @@ namespace ZooAPI.Controllers
         [HttpGet]
         [Authorize(Roles = Roles.UserRole)]
         [RequiredScope(ADScopes.scopeRequiredByApi)]
-        [Route("[controller]/alsodisabled")]
+        [Route("alsodisabled")]
         public async Task<ActionResult<List<AnimalDTO>>> GetAnimalsWithDisabled()
         {
             return Ok(Mapper.Map<List<AnimalDTO>>(await AnimalService.GetAnimals(true)));
@@ -64,7 +64,6 @@ namespace ZooAPI.Controllers
         [HttpPost]
         [Authorize(Roles = Roles.UserRole)]
         [RequiredScope(ADScopes.scopeRequiredByApi)]
-        [Route("[controller]")]
         public async Task<ActionResult<Animal>> PostAnimal([FromBody] CreateAnimalDTO animal)
         {
             try
@@ -91,7 +90,7 @@ namespace ZooAPI.Controllers
         [HttpDelete]
         [Authorize(Roles = Roles.UserRole)]
         [RequiredScope(ADScopes.scopeRequiredByApi)]
-        [Route("[controller]/{id}")]
+        [Route("{id}")]
         public async Task<ActionResult> DeleteAnimal(int id)
         {
             if (await AnimalService.DeleteAnimal(id))
@@ -107,7 +106,7 @@ namespace ZooAPI.Controllers
         [HttpPut]
         [Authorize(Roles = Roles.UserRole)]
         [RequiredScope(ADScopes.scopeRequiredByApi)]
-        [Route("[controller]/{id}")]
+        [Route("{id}")]
         public async Task<ActionResult<Animal>> FullUpdateAnimal(int id,[FromBody] UpdateAnimalDTO animal)
         {
             try

@@ -7,13 +7,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Data.Models
 {
-    public partial class kbh_zooContext : DbContext
+    public partial class Kbh_zooContext : DbContext
     {
-        public kbh_zooContext()
+        public Kbh_zooContext()
         {
         }
 
-        public kbh_zooContext(DbContextOptions<kbh_zooContext> options)
+        public Kbh_zooContext(DbContextOptions<Kbh_zooContext> options)
             : base(options)
         {
         }

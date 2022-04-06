@@ -24,6 +24,8 @@ namespace ZooAPI.Profiles
             //    .ForMember(d => d.DietIdDietNavigation, o => o.MapFrom(s => s));
 
             CreateMap<CreateAnimalDTO, Animal>();
+
+            CreateMap<Animal, AnimalShortInfoDTO > ();
         }
     }
 }
