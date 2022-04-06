@@ -16,11 +16,11 @@ namespace ZooAPI.Controllers
 {
     [Authorize]
     [ApiController]
-    public class AnimalController : Controller
+    public class AnimalsController : Controller
     {
         public IAnimalService AnimalService { get; set; }
         public IMapper Mapper { get; }
-        public AnimalController(IAnimalService animalService, IMapper mapper)
+        public AnimalsController(IAnimalService animalService, IMapper mapper)
         {
             AnimalService = animalService;
             Mapper = mapper;
@@ -46,7 +46,7 @@ namespace ZooAPI.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("[controller]s")]
+        [Route("[controller]")]
         public async Task<ActionResult<List<AnimalDTO>>> GetAnimalsWithoutDisabled()
         {
             return Ok(Mapper.Map<List<AnimalDTO>>(await AnimalService.GetAnimals(false)));
@@ -55,7 +55,7 @@ namespace ZooAPI.Controllers
         [HttpGet]
         [Authorize(Roles = Roles.UserRole)]
         [RequiredScope(ADScopes.scopeRequiredByApi)]
-        [Route("[controller]s/alsodisabled")]
+        [Route("[controller]/alsodisabled")]
         public async Task<ActionResult<List<AnimalDTO>>> GetAnimalsWithDisabled()
         {
             return Ok(Mapper.Map<List<AnimalDTO>>(await AnimalService.GetAnimals(true)));
