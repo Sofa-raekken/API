@@ -53,7 +53,8 @@ namespace ZooAPI.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Roles = Roles.UserRole)]
+        [RequiredScope(ADScopes.scopeRequiredByApi)]
         [Route("[controller]s/alsodisabled")]
         public async Task<ActionResult<List<AnimalDTO>>> GetAnimalsWithDisabled()
         {
