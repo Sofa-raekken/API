@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,6 +19,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using ZooAPI.Profiles;
 using System.Reflection;
+using Data.Models;
+using System.Configuration;
 
 namespace ZooAPI
 {
@@ -33,9 +36,19 @@ namespace ZooAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            services.AddDbContext<kbh_zooContext>(
+            options =>
+            {
+                services.AddDbContext<kbh_zooContext>(
+                options => options.UseSqlServer(
+                    ConfigurationManager.ConnectionStrings["ZooDB"].ConnectionString,
+                providerOptions => providerOptions.EnableRetryOnFailure()));
+            });
+            
             services.AddControllers();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
+            .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
 
             services.AddSwaggerGen(c =>
             {
@@ -44,6 +57,7 @@ namespace ZooAPI
 
             services.AddScoped<IAnimalService, AnimalService>();
             services.AddAutoMapper(typeof(AnimalProfile));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

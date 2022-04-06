@@ -32,8 +32,7 @@ namespace Data.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySQL(ConfigurationManager.ConnectionStrings["ZooDB"].ConnectionString,
-                    options => options.EnableRetryOnFailure());
+                optionsBuilder.UseMySQL(ConfigurationManager.ConnectionStrings["ZooDB"].ConnectionString);
             }
         }
 
