@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -24,16 +23,18 @@ namespace Data.Models
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Diet> Diets { get; set; }
         public virtual DbSet<Event> Events { get; set; }
+        public virtual DbSet<EventTime> EventTimes { get; set; }
         public virtual DbSet<Feedback> Feedbacks { get; set; }
         public virtual DbSet<Information> Information { get; set; }
         public virtual DbSet<Species> Species { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseMySQL(ConfigurationManager.ConnectionStrings["ZooDB"].ConnectionString);
-            }
+//            if (!optionsBuilder.IsConfigured)
+//            {
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+//                optionsBuilder.UseMySQL("Server=sofadb.mysql.database.azure.com;database=kbh_zoo;uid=sde;pwd=ET2Kc},%)8t:5>jh;");
+//            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -230,6 +231,32 @@ namespace Data.Models
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnName("name");
+            });
+
+            modelBuilder.Entity<EventTime>(entity =>
+            {
+                entity.HasKey(e => e.IdEventTime)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("event_time");
+
+                entity.HasIndex(e => e.FkIdEvent, "FK_id_event");
+
+                entity.Property(e => e.IdEventTime)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id_event_time");
+
+                entity.Property(e => e.Date).HasColumnName("date");
+
+                entity.Property(e => e.FkIdEvent)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("FK_id_event");
+
+                entity.HasOne(d => d.FkIdEventNavigation)
+                    .WithMany(p => p.EventTimes)
+                    .HasForeignKey(d => d.FkIdEvent)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("event_time_ibfk_1");
             });
 
             modelBuilder.Entity<Feedback>(entity =>

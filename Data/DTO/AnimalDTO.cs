@@ -19,10 +19,9 @@ namespace Data.DTO
         public string Heigth { get; set; }
         public string BirthWeight { get; set; }
         public string Qr { get; set; }
-        public int SpeciesIdSpecies { get; set; }
 
-        public virtual SpeciesDTO SpeciesIdSpeciesNavigation { get; set; }
-        public virtual IEnumerable<DietDTO> Diets { get; set; }
-        public virtual IEnumerable<EventDTO> Events { get; set; }
+        public SpeciesDTO Species { get; set; }
+        public IEnumerable<DietDTO> Diets { get; set; }
+        public IEnumerable<EventDTO> Events { get; set; }
     }
 }

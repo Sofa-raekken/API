@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace ZooAPI.ADRoles
 {
-    public static class Roles
+    public static class Scope
     {
+        public const string scopeRequiredByApi = "ReadAccess";
 
-        public const string AdminRole = "Admin";
-        public const string UserRole = "User,Admin";
     }
 }

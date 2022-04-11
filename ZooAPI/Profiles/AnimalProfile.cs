@@ -18,14 +18,16 @@ namespace ZooAPI.Profiles
             CreateMap<EventDTO, Event>();
             CreateMap<Animal, AnimalDTO>()
                 .ForMember(d => d.Events, o => o.MapFrom(s => s.AnimalHasEvents.Select(x => x.EventIdEventNavigation).ToList()))
-                .ForMember(d => d.Diets, o => o.MapFrom(s => s.AnimalHasDiets.Select(x => x.DietIdDietNavigation).ToList()));
+                .ForMember(d => d.Diets, o => o.MapFrom(s => s.AnimalHasDiets.Select(x => x.DietIdDietNavigation).ToList()))
+                .ForMember(d => d.Species, o => o.MapFrom(s => s.SpeciesIdSpeciesNavigation));
 
             //CreateMap<DietDTO,AnimalHasDiet>()
             //    .ForMember(d => d.DietIdDietNavigation, o => o.MapFrom(s => s));
 
             CreateMap<CreateAnimalDTO, Animal>();
+            CreateMap<Species, SpeciesDTO>();
 
-            CreateMap<Animal, AnimalShortInfoDTO > ();
+            CreateMap<Animal, AnimalShortInfoDTO>();
         }
     }
 }

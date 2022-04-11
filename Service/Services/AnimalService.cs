@@ -54,6 +54,7 @@ namespace Service.Services
             Animal animal = Context.Animals
                 .Include(x => x.AnimalHasDiets).ThenInclude(x => x.DietIdDietNavigation)
                 .Include(x => x.AnimalHasEvents).ThenInclude(x => x.EventIdEventNavigation)
+                .Include(x => x.SpeciesIdSpeciesNavigation)
                 .SingleOrDefault(x => x.IdAnimal == id);
             return animal;
         }

@@ -10,6 +10,7 @@ namespace Data.Models
         public Event()
         {
             AnimalHasEvents = new HashSet<AnimalHasEvent>();
+            EventTimes = new HashSet<EventTime>();
         }
 
         public int IdEvent { get; set; }
@@ -17,5 +18,6 @@ namespace Data.Models
         public string Description { get; set; }
 
         public virtual ICollection<AnimalHasEvent> AnimalHasEvents { get; set; }
+        public virtual ICollection<EventTime> EventTimes { get; set; }
     }
 }

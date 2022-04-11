@@ -53,8 +53,8 @@ namespace ZooAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = Roles.UserRole)]
-        [RequiredScope(ADScopes.scopeRequiredByApi)]
+        [Authorize(Roles = Role.UserRole)]
+        [RequiredScope(Scope.scopeRequiredByApi)]
         [Route("alsodisabled")]
         public async Task<ActionResult<List<AnimalDTO>>> GetAnimalsWithDisabled()
         {
@@ -62,8 +62,8 @@ namespace ZooAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = Roles.UserRole)]
-        [RequiredScope(ADScopes.scopeRequiredByApi)]
+        [Authorize(Roles = Role.UserRole)]
+        [RequiredScope(Scope.scopeRequiredByApi)]
         public async Task<ActionResult<Animal>> PostAnimal([FromBody] CreateAnimalDTO animal)
         {
             try
@@ -88,8 +88,8 @@ namespace ZooAPI.Controllers
         }
 
         [HttpDelete]
-        [Authorize(Roles = Roles.UserRole)]
-        [RequiredScope(ADScopes.scopeRequiredByApi)]
+        [Authorize(Roles = Role.UserRole)]
+        [RequiredScope(Scope.scopeRequiredByApi)]
         [Route("{id}")]
         public async Task<ActionResult> DeleteAnimal(int id)
         {
@@ -104,8 +104,8 @@ namespace ZooAPI.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = Roles.UserRole)]
-        [RequiredScope(ADScopes.scopeRequiredByApi)]
+        [Authorize(Roles = Role.UserRole)]
+        [RequiredScope(Scope.scopeRequiredByApi)]
         [Route("{id}")]
         public async Task<ActionResult<Animal>> FullUpdateAnimal(int id,[FromBody] UpdateAnimalDTO animal)
         {

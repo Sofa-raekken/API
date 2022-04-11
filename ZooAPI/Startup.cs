@@ -57,6 +57,7 @@ namespace ZooAPI
 
             services.AddScoped<IAnimalService, AnimalService>();
             services.AddScoped<IEventService, EventService>();
+            services.AddScoped<IEventTimeService, EventTimeService>();
             services.AddAutoMapper(typeof(AnimalProfile), typeof(EventProfile));
 
         }

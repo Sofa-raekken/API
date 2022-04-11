@@ -14,6 +14,7 @@ namespace ZooAPI.Profiles
         {
             CreateMap<Event, EventResponseDTO>()
                 .ForMember(d => d.Animals, o => o.MapFrom(s => s.AnimalHasEvents.Select(x => x.AnimalIdAnimalNavigation).ToList()));
+
         }
     }
 }

@@ -31,8 +31,8 @@ namespace ZooAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = Roles.AdminRole)]
-        [RequiredScope(ADScopes.scopeRequiredByApi)]
+        [Authorize(Roles = Role.AdminRole)]
+        [RequiredScope(Scope.scopeRequiredByApi)]
         public IEnumerable<WeatherForecast> Get()
         {
             
