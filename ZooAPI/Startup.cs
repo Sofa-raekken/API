@@ -36,16 +36,6 @@ namespace ZooAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
-            services.AddDbContext<Kbh_zooContext>(
-            options =>
-            {
-                services.AddDbContext<Kbh_zooContext>(
-                options => options.UseSqlServer(
-                    ConfigurationManager.ConnectionStrings["ZooDB"].ConnectionString,
-                providerOptions => providerOptions.EnableRetryOnFailure()));
-            });
-            
             services.AddControllers();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
@@ -55,11 +45,19 @@ namespace ZooAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ZooAPI", Version = "v1" });
             });
 
+            services.AddDbContext<Kbh_zooContext>(
+            options =>
+            {
+                services.AddDbContext<Kbh_zooContext>(
+                options => options.UseSqlServer(
+                    ConfigurationManager.ConnectionStrings["ZooDB"].ConnectionString,
+                providerOptions => providerOptions.EnableRetryOnFailure()));
+            });
+
             services.AddScoped<IAnimalService, AnimalService>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IEventTimeService, EventTimeService>();
             services.AddAutoMapper(typeof(AnimalProfile), typeof(EventProfile));
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
