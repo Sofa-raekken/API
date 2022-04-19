@@ -20,10 +20,14 @@ namespace ZooAPI.Controllers
     public class AnimalsController : Controller
     {
         public IAnimalService AnimalService { get; }
+        public IQRCodeService QrCodeService { get; }
+        public IAzureStorageService AzureStorageService { get; }
         public IMapper Mapper { get; }
-        public AnimalsController(IAnimalService animalService, IMapper mapper)
+        public AnimalsController(IAnimalService animalService, IMapper mapper, IQRCodeService qRCodeService, IAzureStorageService azureStorageService)
         {
             AnimalService = animalService;
+            QrCodeService = qRCodeService;
+            AzureStorageService = azureStorageService;
             Mapper = mapper;
         }
 
@@ -60,20 +64,23 @@ namespace ZooAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Animal>> PostAnimal([FromBody] CreateAnimalDTO animal)
+        public async Task<ActionResult<Animal>> InsertAnimal([FromBody] CreateAnimalDTO animal)
         {
             try
             {
                 int animalId = await AnimalService.InsertAnimal(Mapper.Map<Animal>(animal), animal.Diets);
                 if (animalId > 0)
                 {
-                    return Ok(Mapper.Map<AnimalDTO>(AnimalService.GetAnimal(animalId)));
-                }
-                else
-                {
-                    return StatusCode(500);
+                    string filePath = QrCodeService.GenerateQRCode("" + animalId);
+                    string azureFilePath = AzureStorageService.SendFileToAzureStorage(animalId,filePath);
 
+                    if (await AnimalService.UpdateQRCodeAnimal(animalId, azureFilePath))
+                    {
+                        return Ok(Mapper.Map<AnimalDTO>(AnimalService.GetAnimal(animalId)));
+                    }
                 }
+                return BadRequest();
+
             }
             catch (Exception)
             {
@@ -99,7 +106,7 @@ namespace ZooAPI.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<ActionResult<Animal>> FullUpdateAnimal(int id,[FromBody] UpdateAnimalDTO animal)
+        public async Task<ActionResult<Animal>> FullUpdateAnimal(int id, [FromBody] UpdateAnimalDTO animal)
         {
             try
             {

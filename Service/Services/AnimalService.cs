@@ -34,13 +34,13 @@ namespace Service.Services
         {
             try
             {
-                Animal animalModel = await Context.Animals.SingleOrDefaultAsync(x => x.IdAnimal == id);
+                Animal animalEntity = await Context.Animals.SingleOrDefaultAsync(x => x.IdAnimal == id);
 
                 if (animal is null) { return null; }
 
-                MapUpdateAnimalDTOToAnimal(animal, ref animalModel);
+                MapUpdateAnimalDTOToAnimal(animal, ref animalEntity);
 
-                return Context.SaveChanges() > 0 ? animalModel : null;
+                return await Context.SaveChangesAsync() > 0 ? animalEntity : null;
             }
             catch (Exception)
             {
@@ -118,6 +118,25 @@ namespace Service.Services
             }
             catch (Exception)
             {
+                throw;
+            }
+        }
+
+        public async Task<bool> UpdateQRCodeAnimal(int id, string path)
+        {
+            try
+            {
+                Animal animalEntity = await Context.Animals.SingleOrDefaultAsync(x => x.IdAnimal == id);
+
+                if (animalEntity is null) { return false; }
+
+                animalEntity.Qr = path;
+
+                return await Context.SaveChangesAsync() > 0 ;
+            }
+            catch (Exception)
+            {
+
                 throw;
             }
         }

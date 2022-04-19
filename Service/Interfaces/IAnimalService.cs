@@ -15,5 +15,6 @@ namespace Service.Interfaces
         Task<int> InsertAnimal(Animal animal, List<DietDTO> diets);
         Task<bool> DeleteAnimal(int id);
         Task<Animal> FullUpdateAnimal(int id,UpdateAnimalDTO animal);
+        Task<bool> UpdateQRCodeAnimal(int id, string path);
     }
 }
