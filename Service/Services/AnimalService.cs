@@ -27,7 +27,7 @@ namespace Service.Services
 
             animal.Disabled = 1;
 
-            return Context.SaveChanges() > 0 ? true : false;
+            return await Context.SaveChangesAsync() > 0;
         }
 
         public async Task<Animal> FullUpdateAnimal(int id, UpdateAnimalDTO animal)

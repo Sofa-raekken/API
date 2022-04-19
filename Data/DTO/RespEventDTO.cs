@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data.DTO
 {
-    public class EventResponseDTO
+    public class RespEventDTO
     {
         public int IdEvent { get; set; }
         public string Name { get; set; }

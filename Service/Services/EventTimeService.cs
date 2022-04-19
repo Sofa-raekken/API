@@ -17,6 +17,23 @@ namespace Service.Services
         {
             Context = context;
         }
+
+        public async Task<bool> DeleteEventTimestap(int timestampId)
+        {
+            EventTime entity = await Context.EventTimes.SingleOrDefaultAsync(x => x.IdEventTime == timestampId);
+            if(entity is null)
+            {
+                return false;
+            }
+            Context.EventTimes.Remove(entity);
+            return await Context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<List<EventTime>> GetAllEventTimestamps()
+        {
+            return await Context.EventTimes.Include(x => x.FkIdEventNavigation).ToListAsync();
+        }
+
         public async Task<List<EventTime>> GetEventsForDate(DateTime? datetime = null)
         {
 
@@ -30,9 +47,16 @@ namespace Service.Services
                 exp = x => x.Date.Date == DateTime.Now.Date;
             }
 
-            List<EventTime> eventTimes = await Context.EventTimes.Where(exp).OrderBy(x => x.Date).ToListAsync();
+            List<EventTime> eventTimes = await Context.EventTimes.Include(x => x.FkIdEventNavigation).Where(exp).OrderBy(x => x.Date).ToListAsync();
 
             return eventTimes;
+        }
+
+        public async Task<bool> InsertEventTimestampsForDate(List<EventTime> eventTimestamps)
+        {
+            await Context.EventTimes.AddRangeAsync(eventTimestamps);
+
+            return await Context.SaveChangesAsync() > 0;
         }
     }
 }

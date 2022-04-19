@@ -30,23 +30,22 @@ namespace ZooAPI.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<List<EventResponseDTO>>> GetEvents()
+        public async Task<ActionResult<List<RespEventDTO>>> GetEvents()
         {
-            return Ok(Mapper.Map<List<EventResponseDTO>>(await EventService.GetEvents()));
+            return Ok(Mapper.Map<List<RespEventDTO>>(await EventService.GetEvents()));
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         [AllowAnonymous]
-        [Route("{id}")]
-        public async Task<ActionResult<EventResponseDTO>> GetEvent(int id)
+        public async Task<ActionResult<RespEventDTO>> GetEvent(int id)
         {
-            return Ok(Mapper.Map<EventResponseDTO>(await EventService.GetEvent(id)));
+            return Ok(Mapper.Map<RespEventDTO>(await EventService.GetEvent(id)));
         }
 
         [HttpPost]
         [Authorize(Role.UserRole)]
         [RequiredScope(Scope.scopeRequiredByApi)]
-        public async Task<ActionResult<EventResponseDTO>> InsertEvent([FromBody] CreateEventDTO eventDTO)
+        public async Task<ActionResult<RespEventDTO>> InsertEvent([FromBody] CreateEventDTO eventDTO)
         {
             try
             {
@@ -54,7 +53,7 @@ namespace ZooAPI.Controllers
 
                 if (eventModel is not null)
                 {
-                    return Ok(Mapper.Map<EventResponseDTO>(eventModel));
+                    return Ok(Mapper.Map<RespEventDTO>(eventModel));
                 }
                 return null;
             }
@@ -65,11 +64,10 @@ namespace ZooAPI.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [Authorize(Role.UserRole)]
         [RequiredScope(Scope.scopeRequiredByApi)]
-        [Route("{id}")]
-        public async Task<ActionResult<EventResponseDTO>> DeleteEvent(int id)
+        public async Task<ActionResult<RespEventDTO>> DeleteEvent(int id)
         {
             try
             {

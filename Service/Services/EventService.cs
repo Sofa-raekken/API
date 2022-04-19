@@ -32,7 +32,7 @@ namespace Service.Services
                 List<AnimalHasEvent> animalHasEvents = await Context.AnimalHasEvents.Where(x => x.EventIdEvent == id).ToListAsync();
                 Context.AnimalHasEvents.RemoveRange(animalHasEvents);
 
-                return await Context.SaveChangesAsync() > 0 ? true : false;
+                return await Context.SaveChangesAsync() > 0;
             }
             catch (Exception)
             {

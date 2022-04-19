@@ -10,6 +10,9 @@ namespace Service.Interfaces
     public interface IEventTimeService
     {
         Task<List<EventTime>> GetEventsForDate(DateTime? datetime = null);
+        Task<List<EventTime>> GetAllEventTimestamps();
+        Task<bool> InsertEventTimestampsForDate(List<EventTime> eventTimestamps);
+        Task<bool> DeleteEventTimestap(int timestampId);
 
     }
 }

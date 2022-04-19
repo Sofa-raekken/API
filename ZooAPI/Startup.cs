@@ -57,7 +57,7 @@ namespace ZooAPI
             services.AddScoped<IAnimalService, AnimalService>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IEventTimeService, EventTimeService>();
-            services.AddAutoMapper(typeof(AnimalProfile), typeof(EventProfile));
+            services.AddAutoMapper(typeof(AnimalProfile), typeof(EventProfile), typeof(EventTimestampProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
