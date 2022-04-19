@@ -72,7 +72,7 @@ namespace ZooAPI.Controllers
                 if (animalId > 0)
                 {
                     string filePath = QrCodeService.GenerateQRCode("" + animalId);
-                    string azureFilePath = AzureStorageService.SendFileToAzureStorage(animalId,filePath);
+                    string azureFilePath = AzureStorageService.SendFileToAzureStorage(animalId, filePath);
 
                     if (await AnimalService.UpdateQRCodeAnimal(animalId, azureFilePath))
                     {
@@ -125,6 +125,33 @@ namespace ZooAPI.Controllers
 
                 return StatusCode(500, animal);
             }
+        }
+
+        [HttpPatch("{id}/{qrcode}")]
+        public async Task<ActionResult<Animal>> UpdateQROnAnimal(int id, [FromBody] PatchQRCodeDTO patchQRCodeDTO)
+        {
+            try
+            {
+                string filePath = QrCodeService.GenerateQRCode(patchQRCodeDTO.QRCode);
+
+                if (string.IsNullOrWhiteSpace(filePath)) { return BadRequest(); }
+
+                string azureFilePath = AzureStorageService.SendFileToAzureStorage(id, filePath);
+
+                if (string.IsNullOrWhiteSpace(azureFilePath)) { return BadRequest(); }
+
+                if (await AnimalService.UpdateQRCodeAnimal(id, azureFilePath))
+                {
+                    return Ok(Mapper.Map<AnimalDTO>(AnimalService.GetAnimal(id)));
+                }
+
+                return BadRequest();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
         }
     }
 }
