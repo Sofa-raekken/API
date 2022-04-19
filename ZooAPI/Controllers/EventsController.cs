@@ -13,18 +13,16 @@ using ZooAPI.ADRoles;
 
 namespace ZooAPI.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = Role.UserRole)]
     [ApiController]
     [Route("[controller]")]
     public class EventsController : Controller
     {
         public IEventService EventService { get; }
-        public IEventTimeService EventTimeService { get; }
         public IMapper Mapper { get; }
-        public EventsController(IEventService eventService, IEventTimeService eventTimeService, IMapper mapper)
+        public EventsController(IEventService eventService, IMapper mapper)
         {
             EventService = eventService;
-            EventTimeService = eventTimeService;
             Mapper = mapper;
         }
 
@@ -43,8 +41,6 @@ namespace ZooAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize(Role.UserRole)]
-        [RequiredScope(Scope.scopeRequiredByApi)]
         public async Task<ActionResult<RespEventDTO>> InsertEvent([FromBody] CreateEventDTO eventDTO)
         {
             try
@@ -65,8 +61,6 @@ namespace ZooAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Role.UserRole)]
-        [RequiredScope(Scope.scopeRequiredByApi)]
         public async Task<ActionResult<RespEventDTO>> DeleteEvent(int id)
         {
             try
@@ -76,6 +70,24 @@ namespace ZooAPI.Controllers
                     return Ok();
                 }
 
+                return NotFound();
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(500);
+            }
+        }
+        [HttpPut("{id}")]
+        public async Task<ActionResult<RespEventDTO>> UpdateEvent(int id, [FromBody] UpdateEventDTO updateEventDTO)
+        {
+            try
+            {
+                var updatedEntity = await EventService.UpdateEvent(id, updateEventDTO);
+                if(updatedEntity is not null)
+                {
+                    return Ok(Mapper.Map<RespEventDTO>(updatedEntity));
+                }
                 return NotFound();
             }
             catch (Exception)

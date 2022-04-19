@@ -42,7 +42,7 @@ namespace Service.Services
 
         public async Task<Event> GetEvent(int id)
         {
-            return await Context.Events.SingleOrDefaultAsync(x => x.IdEvent == id);
+            return await Context.Events.Include(x => x.AnimalHasEvents).ThenInclude(x => x.AnimalIdAnimalNavigation).SingleOrDefaultAsync(x => x.IdEvent == id);
         }
 
         public async Task<List<Event>> GetEvents()
@@ -78,7 +78,7 @@ namespace Service.Services
 
         public async Task<Event> UpdateEvent(int id, UpdateEventDTO eventDTO)
         {
-            Event eventModel = await Context.Events.SingleOrDefaultAsync(x => x.IdEvent == id);
+            Event eventModel = await Context.Events.Include(x => x.AnimalHasEvents).ThenInclude(x => x.AnimalIdAnimalNavigation).SingleOrDefaultAsync(x => x.IdEvent == id);
 
             if(eventModel is null) { return null; }
 
