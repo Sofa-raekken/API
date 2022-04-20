@@ -23,9 +23,9 @@ namespace Data.DTO
         public string Pregnancy { get; set; }
         public string Heigth { get; set; }
         public string BirthWeight { get; set; }
+        public string Qr { get; set; }
 
         [Required]
-        public string Qr { get; set; }
         public int SpeciesIdSpecies { get; set; }
 
         public List<DietDTO> Diets { get; set; }
