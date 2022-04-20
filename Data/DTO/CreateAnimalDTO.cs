@@ -1,4 +1,5 @@
 ﻿using Data.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -26,6 +27,7 @@ namespace Data.DTO
         public string Qr { get; set; }
 
         [Required]
+        [JsonProperty("species")]
         public int SpeciesIdSpecies { get; set; }
 
         public List<DietDTO> Diets { get; set; }
