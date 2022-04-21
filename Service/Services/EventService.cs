@@ -42,12 +42,12 @@ namespace Service.Services
 
         public async Task<Event> GetEvent(int id)
         {
-            return await Context.Events.Include(x => x.AnimalHasEvents).ThenInclude(x => x.AnimalIdAnimalNavigation).SingleOrDefaultAsync(x => x.IdEvent == id);
+            return await Context.Events.Include(x => x.EventTimes).Include(x => x.AnimalHasEvents).ThenInclude(x => x.AnimalIdAnimalNavigation).SingleOrDefaultAsync(x => x.IdEvent == id);
         }
 
         public async Task<List<Event>> GetEvents()
         {
-            return await Context.Events.Include(x => x.AnimalHasEvents).ThenInclude(x => x.AnimalIdAnimalNavigation).ToListAsync();
+            return await Context.Events.Include(x => x.EventTimes).Include(x => x.AnimalHasEvents).ThenInclude(x => x.AnimalIdAnimalNavigation).ToListAsync();
         }
 
         public async Task<Event> InsertEvent(CreateEventDTO eventDTO)

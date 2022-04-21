@@ -13,7 +13,8 @@ namespace ZooAPI.Profiles
         public EventProfile()
         {
             CreateMap<Event, RespEventDTO>()
-                .ForMember(d => d.Animals, o => o.MapFrom(s => s.AnimalHasEvents.Select(x => x.AnimalIdAnimalNavigation).ToList()));
+                .ForMember(d => d.Animals, o => o.MapFrom(s => s.AnimalHasEvents.Select(x => x.AnimalIdAnimalNavigation).ToList()))
+                .ForMember(d => d.Schedules, o => o.MapFrom(s => s.EventTimes));
 
         }
     }

@@ -12,5 +12,6 @@ namespace Data.DTO
         public string Name { get; set; }
         public string Description { get; set; }
         public List<AnimalShortInfoDTO> Animals { get; set; }
+        public List<RespEventTimestampDTO> Schedules { get; set; }
     }
 }

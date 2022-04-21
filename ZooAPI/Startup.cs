@@ -60,7 +60,9 @@ namespace ZooAPI
             services.AddScoped<IQRCodeService, QRCodeService>();
             services.AddScoped<IAzureStorageService, AzureStorageService>();
             services.AddScoped<IFeedbackService, FeedbackService>();
-            services.AddAutoMapper(typeof(AnimalProfile), typeof(EventProfile), typeof(EventTimestampProfile));
+            services.AddScoped<ICategoryService, CategoryService>();
+
+            services.AddAutoMapper(typeof(AnimalProfile), typeof(EventProfile), typeof(EventTimestampProfile), typeof(FeedbackProfile), typeof(CategoryProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

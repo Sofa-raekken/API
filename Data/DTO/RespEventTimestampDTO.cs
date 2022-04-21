@@ -8,8 +8,8 @@ namespace Data.DTO
 {
     public class RespEventTimestampDTO
     {
+        public int EventId { get; set; }
         public string EventName { get; set; }
         public DateTime OccurringDate { get; set; }
-        public int EventId { get; set; }
     }
 }
