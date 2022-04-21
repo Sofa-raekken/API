@@ -62,7 +62,7 @@ namespace Service.Services
 
                 eventInsert.AnimalHasEvents.Add(new AnimalHasEvent() { AnimalIdAnimal = eventDTO.IdAnimal });
 
-                Context.Events.Add(eventInsert);
+                await Context.Events.AddAsync(eventInsert);
 
                 if (await Context.SaveChangesAsync() > 0)
                 {

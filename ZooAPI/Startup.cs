@@ -59,6 +59,7 @@ namespace ZooAPI
             services.AddScoped<IEventTimeService, EventTimeService>();
             services.AddScoped<IQRCodeService, QRCodeService>();
             services.AddScoped<IAzureStorageService, AzureStorageService>();
+            services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddAutoMapper(typeof(AnimalProfile), typeof(EventProfile), typeof(EventTimestampProfile));
         }
 

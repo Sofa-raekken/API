@@ -12,6 +12,7 @@ namespace Data.Models
         public int Rate { get; set; }
         public string Comment { get; set; }
         public int CategoryIdCategory { get; set; }
+        public byte? Resolved { get; set; }
 
         public virtual Category CategoryIdCategoryNavigation { get; set; }
     }

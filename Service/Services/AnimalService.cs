@@ -112,7 +112,7 @@ namespace Service.Services
                         });
                     }
                 }
-                Context.Animals.Add(animal);
+                await Context.Animals.AddAsync(animal);
 
                 return await Context.SaveChangesAsync() > 0 ? animal.IdAnimal : 0;
             }
@@ -132,7 +132,7 @@ namespace Service.Services
 
                 animalEntity.Qr = path;
 
-                return await Context.SaveChangesAsync() > 0 ;
+                return await Context.SaveChangesAsync() > 0;
             }
             catch (Exception)
             {

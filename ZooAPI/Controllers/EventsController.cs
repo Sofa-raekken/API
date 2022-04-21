@@ -30,14 +30,29 @@ namespace ZooAPI.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<List<RespEventDTO>>> GetEvents()
         {
-            return Ok(Mapper.Map<List<RespEventDTO>>(await EventService.GetEvents()));
+            try
+            {
+                return Ok(Mapper.Map<List<RespEventDTO>>(await EventService.GetEvents()));
+
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
 
         [HttpGet("{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<RespEventDTO>> GetEvent(int id)
         {
-            return Ok(Mapper.Map<RespEventDTO>(await EventService.GetEvent(id)));
+            try
+            {
+                return Ok(Mapper.Map<RespEventDTO>(await EventService.GetEvent(id)));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
 
         [HttpPost]
@@ -84,7 +99,7 @@ namespace ZooAPI.Controllers
             try
             {
                 var updatedEntity = await EventService.UpdateEvent(id, updateEventDTO);
-                if(updatedEntity is not null)
+                if (updatedEntity is not null)
                 {
                     return Ok(Mapper.Map<RespEventDTO>(updatedEntity));
                 }

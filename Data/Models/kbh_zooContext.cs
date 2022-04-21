@@ -188,7 +188,7 @@ namespace Data.Models
                     .HasColumnType("int(11)")
                     .HasColumnName("id_category");
 
-                entity.Property(e => e.Category1)
+                entity.Property(e => e.CategoryName)
                     .IsRequired()
                     .HasMaxLength(25)
                     .HasColumnName("category");
@@ -288,6 +288,10 @@ namespace Data.Models
                 entity.Property(e => e.Rate)
                     .HasColumnType("int(11)")
                     .HasColumnName("rate");
+
+                entity.Property(e => e.Resolved)
+                    .HasColumnType("tinyint(4)")
+                    .HasColumnName("resolved");
 
                 entity.HasOne(d => d.CategoryIdCategoryNavigation)
                     .WithMany(p => p.Feedbacks)

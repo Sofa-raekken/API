@@ -36,31 +36,45 @@ namespace ZooAPI.Controllers
         [Route("{id}")]
         public ActionResult<AnimalDTO> GetAnimal(int id)
         {
-            Animal animal = AnimalService.GetAnimal(id);
+            try
+            {
+                Animal animal = AnimalService.GetAnimal(id);
 
-            if (animal is not null)
-            {
-                AnimalDTO animalDTO = Mapper.Map<AnimalDTO>(animal);
-                return Ok(animalDTO);
+                return Ok(Mapper.Map<AnimalDTO>(animal));
             }
-            else
+            catch (Exception)
             {
-                return BadRequest("No animal found");
+                return StatusCode(500);
             }
+
         }
 
         [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult<List<AnimalDTO>>> GetAnimalsWithoutDisabled()
         {
-            return Ok(Mapper.Map<List<AnimalDTO>>(await AnimalService.GetAnimals(false)));
+            try
+            {
+                return Ok(Mapper.Map<List<AnimalDTO>>(await AnimalService.GetAnimals(false)));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
 
         [HttpGet]
         [Route("alsodisabled")]
         public async Task<ActionResult<List<AnimalDTO>>> GetAnimalsWithDisabled()
         {
-            return Ok(Mapper.Map<List<AnimalDTO>>(await AnimalService.GetAnimals(true)));
+            try
+            {
+                return Ok(Mapper.Map<List<AnimalDTO>>(await AnimalService.GetAnimals(true)));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
 
         [HttpPost]
@@ -79,7 +93,7 @@ namespace ZooAPI.Controllers
                         return Ok(Mapper.Map<AnimalDTO>(AnimalService.GetAnimal(animalId)));
                     }
                 }
-                return BadRequest();
+                return BadRequest("Bad Request");
 
             }
             catch (Exception)
@@ -94,14 +108,22 @@ namespace ZooAPI.Controllers
         [Route("{id}")]
         public async Task<ActionResult> DeleteAnimal(int id)
         {
-            if (await AnimalService.DeleteAnimal(id))
+            try
             {
-                return Ok("Successfully Deleted");
+                if (await AnimalService.DeleteAnimal(id))
+                {
+                    return Ok("Successfully Deleted");
+                }
+                else
+                {
+                    return BadRequest("Bad Request");
+                }
             }
-            else
+            catch (Exception)
             {
-                return BadRequest("Bad Request");
+                return StatusCode(500);
             }
+
         }
 
         [HttpPut]
@@ -134,18 +156,18 @@ namespace ZooAPI.Controllers
             {
                 string filePath = QrCodeService.GenerateQRCode(patchQRCodeDTO.QRCode);
 
-                if (string.IsNullOrWhiteSpace(filePath)) { return BadRequest(); }
+                if (string.IsNullOrWhiteSpace(filePath)) { return BadRequest("Bad Request"); }
 
                 string azureFilePath = AzureStorageService.SendFileToAzureStorage(id, filePath);
 
-                if (string.IsNullOrWhiteSpace(azureFilePath)) { return BadRequest(); }
+                if (string.IsNullOrWhiteSpace(azureFilePath)) { return BadRequest("Bad Request"); }
 
                 if (await AnimalService.UpdateQRCodeAnimal(id, azureFilePath))
                 {
                     return Ok(Mapper.Map<AnimalDTO>(AnimalService.GetAnimal(id)));
                 }
 
-                return BadRequest();
+                return BadRequest("Bad Request");
             }
             catch (Exception)
             {

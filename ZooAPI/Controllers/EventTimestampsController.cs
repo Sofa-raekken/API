@@ -66,7 +66,7 @@ namespace ZooAPI.Controllers
                     return Ok();
 
                 }
-                return BadRequest();
+                return BadRequest("Bad Request");
 
             }
             catch (Exception)
@@ -86,7 +86,7 @@ namespace ZooAPI.Controllers
                     return Ok();
 
                 }
-                return BadRequest();
+                return BadRequest("Bad Request");
 
             }
             catch (Exception)
