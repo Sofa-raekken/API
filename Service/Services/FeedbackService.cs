@@ -26,7 +26,7 @@ namespace Service.Services
             {
                 query = query.Where(exp);
             }
-            return await query.OrderByDescending(x => x.Date).Take(count).Skip(skip).ToListAsync();
+            return await query.OrderByDescending(x => x.Date).Skip(skip).Take(count).ToListAsync();
         }
 
         private List<Expression<Func<Feedback, bool>>> FeedbackExpression(DateTime? startdate, DateTime? enddate)
