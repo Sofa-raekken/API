@@ -112,6 +112,7 @@ namespace Service.Services
                         });
                     }
                 }
+                animal.Disabled = 1;
                 await Context.Animals.AddAsync(animal);
 
                 return await Context.SaveChangesAsync() > 0 ? animal.IdAnimal : 0;
